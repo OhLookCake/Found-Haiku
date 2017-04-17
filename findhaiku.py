@@ -4,12 +4,8 @@ import re
 
 def main():
 
-    if len(sys.argv)>1:
-        text = sys.argv[1]
-    else:
-        text = 'This is a dummy padding sentence. To be or not to be that is the question. This is a testicle. More dummy padding. Cat cat CAT cAt CaT cat cat CAt CAT caT Cat cat cat cat Cat CAT cat!!! Balloon. '
-
-    #pre-preprocess and clean
+    text = ' '.join(sys.stdin.readlines())
+    #Pre-preprocess and clean
 
     specials = '"()-,:;'
     enders = '\.\?\!'
@@ -19,7 +15,6 @@ def main():
 
     text = re.sub('\s',' ',text)
     #text = re.sub('\s+',' ',text) #clean up spaces
-    print(text)
 
 
     collector = ''
@@ -64,15 +59,14 @@ def main():
             collector += ' ' + word
             listcollector.append(word)
             counter += numsyllables
-            #print(word, numsyllables, counter)
     #for loop ends
 
 
 def count_syllables_in_word(word):
     word = word.lower()
-    phones = pronouncing.phones_for_word(word)[0]
+    phones = pronouncing.phones_for_word(word)
     if len(phones) > 0:
-        return sum([pronouncing.syllable_count(p) for p in phones])
+        return sum([pronouncing.syllable_count(p) for p in phones[0]])
     else:
         return None
 
