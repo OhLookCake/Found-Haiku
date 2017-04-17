@@ -7,7 +7,7 @@ def main():
     if len(sys.argv)>1:
         text = sys.argv[1]
     else:
-        text = 'This is a dummy padding sentence. To be or not to be that is the question. This is a testicle. More dummy padding. cat cat cat cat cat cat cat cat cat cat cat cat cat cat cat cat cat. Balloon. '
+        text = 'This is a dummy padding sentence. To be or not to be that is the question. This is a testicle. More dummy padding. Cat cat CAT cAt CaT cat cat CAt CAT caT Cat cat cat cat Cat CAT cat!!! Balloon. '
 
     #pre-preprocess and clean
 
@@ -15,10 +15,11 @@ def main():
     enders = '\.\?\!'
 
     text = re.sub('([' + specials + '])', ' \\1 ', text)
-    text = re.sub('([' + enders + '])', ' \\1 ', text)
+    text = re.sub('([' + enders + ']+)', ' \\1 ', text)
 
     text = re.sub('\s',' ',text)
     #text = re.sub('\s+',' ',text) #clean up spaces
+    print(text)
 
 
     collector = ''
@@ -34,7 +35,7 @@ def main():
             collector+=' '
             listcollector.append(word)
 
-        elif word in enders:
+        elif re.match('^['+enders+']+$', word):
             collector += word
             listcollector.append(word)
 
@@ -96,7 +97,7 @@ def guess_syllables(word):
 def haikufy(text, listtext):
     #TODO: Pretty print this.
     text = re.sub('\s+',' ',text) #clean up spaces
-    print('HAIKU!', text)
+    print('HAIKU>', text)
 
 
 if __name__ == "__main__":
